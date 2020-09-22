@@ -43,7 +43,8 @@ def results():
     try:
         # Set a timeout because queries could take longer than one minute.
         results = query_job.result(timeout=30)
-        results = [r.replace('\\', '\\\\') for r in results]
+        results = [r['summary_polyline'] for r in results if r]
+        results = [r.replace('\\', '\\\\') for r in results if r]
     except concurrent.futures.TimeoutError:
         return flask.render_template("timeout.html", job_id=query_job.job_id)
 
